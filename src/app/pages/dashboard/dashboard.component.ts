@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JobrequirementService } from '../jobrequirement/jobrequirement.service';
+import { CompanyService } from '../company/company.service';
 import Chart from 'chart.js';
 
 // core components
@@ -24,8 +25,8 @@ export class DashboardComponent implements OnInit {
   public clicked1: boolean = false;
   jobRequirementList: any = [];
   allHireList: any = [];
-  dashboardStatics:any={jobs:"0",joined:"0",release:"0",accepted:"0"};
-  constructor(private jobservice: JobrequirementService) { }
+  dashboardStatics:any={allschool:"0",joined:"0",release:"0",accepted:"0"};
+  constructor(private jobservice: JobrequirementService,private companyservice: CompanyService) { }
   getAllJobRequirement() {
     this.jobservice.getjobRequirement().subscribe((output: {}) => this.getAllJobRequirementResult(output),
       error => {
@@ -68,7 +69,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   ngOnInit() {
-   
+    this.dashboardStatics.allschool =  this.companyservice.schools.length
     this.datasets = [
       [0, 20, 10, 30, 15, 40, 20, 60, 60],
       [0, 20, 5, 25, 10, 30, 15, 40, 40]
@@ -103,6 +104,7 @@ export class DashboardComponent implements OnInit {
   public updateOptions() {
      this.salesChart.data.datasets[0].data = this.data;
      this.salesChart.update();
+    
   }
 
 }

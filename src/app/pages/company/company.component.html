@@ -218,7 +218,7 @@
 </ng-template>
 <ng-template #addProducts let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add product</h4>
+    <h4 class="modal-title" id="modal-basic-products">Add product</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -258,8 +258,8 @@
           </div>
           <div class="col-lg-6">
             <div class="form-group">
-              <label class="form-control-label" for="input-last-name">Total Stock</label>
-              <input type="text"  class="form-control" placeholder="Total Stock" [(ngModel)]="productsDetails.totalstock" name="totalstock">
+              <label class="form-control-label" for="input-last-name">Purchase price</label>
+              <input type="text"  class="form-control" placeholder="Purchase Stock" [(ngModel)]="productsDetails.pprize" name="pprize">
             </div>
           </div>
         </div>
@@ -269,6 +269,12 @@
               <label class="form-control-label" for="input-numberofEmply">Sold</label>
               <input type="text"  class="form-control" placeholder="Sold" [(ngModel)]="productsDetails.sold" name="noemployee" >
               
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-last-name">Total Stock</label>
+              <input type="text"  class="form-control" placeholder="Total Stock" [(ngModel)]="productsDetails.totalstock" name="totalstock">
             </div>
           </div>
         </div>
@@ -286,7 +292,7 @@
 </ng-template>
 <ng-template #ProductsList let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-titlelist">Stock details of {{Schoolname}}</h4>
+      <h4 class="modal-title" id="modalbasictitlelist" #modalbasictitlelist>Stock details of {{Schoolname}}</h4>
      
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
@@ -305,6 +311,7 @@
               <th scope="col">Total Stock</th>
               <th scope="col">Sold</th>
               <th scope="col">Available stock</th>
+              <th scope="col">Pruchase Prize</th>
               <th scope="col">Prize</th>
               <th scope="col">Total selling price</th>
               <th scope="col">Edit</th>
@@ -330,6 +337,9 @@
                 {{+product.totalstock - +product.sold}}
               </td>
               <td>
+                {{product.pprize}}
+              </td>
+              <td>
                 {{product.price}}
               </td>
               <td>
@@ -350,7 +360,7 @@
     </div>
     </div>
     <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="downloadAsPDF()">Save PDF</button> -->
       <a href="javascript:void(0)" class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</a>
      
     </div>

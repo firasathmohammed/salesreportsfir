@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private loginService: LoginService,public router: Router) { }
 // login app function which use to login the application
   loginApp() {
-    if (this.loginDetails.username == 'mohsin' && this.loginDetails.password == 'sale123' ) {
-      var data = {username:"Firasath"}
+    if (this.loginDetails.username == 'firasath' && this.loginDetails.password == 'firasath123' ) {
+      var data = {username:this.loginDetails.username}
       localStorage.setItem('userSession', JSON.stringify(data));
       this.loginService.CurrentSession = JSON.parse(
         localStorage.getItem('userSession')

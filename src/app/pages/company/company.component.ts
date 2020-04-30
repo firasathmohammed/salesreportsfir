@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef,ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CompanyService } from './company.service';
 import { LoginService } from '../login/login.service';
+//import * as jsPDF from 'jspdf';
+
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss']
 })
 export class CompanyComponent implements OnInit {
+  //@ViewChild('modalbasictitlelist') modalbasictitlelist: ElementRef;
+ 
   closeResult: string;
   schoolDetails: any = {};
   productsDetails:any = {};
@@ -83,7 +87,7 @@ else{
 
   }
   editProducts(products,content){
-    this.productsDetails = { id: products.id,name: products.name, size: products.size,  price: products.price, totalstock: products.totalstock, sold: products.sold,schoolid : products.schoolid}
+    this.productsDetails = { id: products.id,name: products.name, size: products.size,  price: products.price, pprize:products.pprize,totalstock: products.totalstock, sold: products.sold,schoolid : products.schoolid}
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -101,6 +105,7 @@ else{
             e.price = products.price;
             e.totalstock = products.totalstock;
             e.sold = products.sold;
+            e.pprize=products.pprize;
           }
         });
         
@@ -110,7 +115,7 @@ else{
     modal.dismiss('Cross click')
   }
   openModalAddProduct(school, content) {
-    this.productsDetails = { id: 0,name: "", size: "",  price: "", totalstock: "", sold: "",schoolid : school.id}
+    this.productsDetails = { id: 0,name: "", size: "",  price: "",pprize:"", totalstock: "", sold: "",schoolid : school.id}
    
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -205,6 +210,24 @@ else{
     }
 
   }
+  // downloadAsPDF() {
+  //   const doc = new jsPDF();
+
+  //   const specialElementHandlers = {
+  //     '#editor': function (element, renderer) {
+  //       return true;
+  //     }
+  //   };
+
+  //   const pdfTable = this.modalbasictitlelist.nativeElement;
+
+  //   doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+  //     width: 190,
+  //     'elementHandlers': specialElementHandlers
+  //   });
+
+  //   doc.save('tableToPdf.pdf');
+  // }
   ngOnInit() {
    //  this.getAllSchools();
     // this.loginid = this.loginservice.loggedInUserId();

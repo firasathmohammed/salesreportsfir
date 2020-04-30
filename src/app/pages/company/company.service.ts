@@ -10,7 +10,7 @@ import {LoginService} from "../login/login.service";
   providedIn: 'root'
 })
 export class CompanyService {
-schools: any = [{id:1,name:"st mary high school",registration:"652",mobileno:"5632585965",emailid:"test@gmial.com",address:"India",products:[{ id: 1,name: "Shirt", size: "20",  price: "50", totalstock: "0", sold: "0",schoolid : 1}]}]
+schools: any = [{id:1,name:"st mary high school",registration:"652",mobileno:"5632585965",emailid:"test@gmial.com",address:"India",products:[{ id: 1,name: "Shirt", size: "20",  price: "50",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 2,name: "Paint", size: "20",  price: "60",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 3,name: "Jacket", size: "20",  price: "80",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 4,name: "Shirt", size: "22",  price: "70",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 5,name: "Paint", size: "22",  price: "50",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 6,name: "Shirt", size: "24",  price: "80",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 7,name: "Shirt", size: "26",  price: "50",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 8,name: "Pink Shirt", size: "20",  price: "50",pprize:"40", totalstock: "0", sold: "0",schoolid : 1},{ id: 9,name: "Paint", size: "26",  price: "50",pprize:"40", totalstock: "0", sold: "0",schoolid : 1}]}]
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string,private loginservice: LoginService) { }
   createUpdateCompany(input: any) {
     let bodyString = JSON.stringify(input); // Stringify payload
