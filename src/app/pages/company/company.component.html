@@ -1,0 +1,357 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">School List</h3>
+            </div>
+            <div class="col-4 text-right">
+              <a  href="javascript:void(0)" class="btn btn-sm btn-primary"  (click)="openModalCreate(contents)">Create</a>
+            </div>
+          </div>
+        </div>
+       
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">School Name</th>
+                <th scope="col">Registration No.</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Email address</th>
+                <th scope="col">Address</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let school of schoolList;">
+                <th scope="row">
+                  <div class="media align-items-center">
+                   {{school.name}}
+                  </div>
+                </th>
+                <td>
+                  {{school.registration}}
+                </td>
+                <td>
+                  {{school.mobileno}}
+                </td>
+                <td>
+                  {{school.emailid}}
+                </td>
+                <td>
+                  {{school.address}}
+                </td>
+              
+                <td class="text-right">
+                  <div ngbDropdown placement="bottom-right">
+                    <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                      <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                      <a class="dropdown-item"  (click)='getschoolDetails(school,contents)' href="javascript:void(0)">Edit</a>
+                      <a class="dropdown-item"  (click)='openModalAddProduct(school,addProducts)' href="javascript:void(0)">Add products</a>
+                      <a class="dropdown-item"  (click)='openModalProductslist(school,ProductsList)' href="javascript:void(0)">Products List</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+             
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer py-4">
+          <!-- <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item disabled">
+                <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                  <i class="fas fa-angle-left"></i>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">2 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">
+                  <i class="fas fa-angle-right"></i>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Dark table -->
+ 
+</div>
+<ng-template #contents let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">School</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form name="form" (ngSubmit)="f.form.valid && createCompany()" #f="ngForm" novalidate>
+  <div class="modal-body">
+    <h6 class="heading-small text-muted mb-4">School information</h6>
+      <div class="pl-lg-4">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-companyname">School name</label>
+              <input type="text"  class="form-control" placeholder="School name" [(ngModel)]="schoolDetails.name" name="companyname"  #companyname="ngModel" [ngClass]="{ 'is-invalid': f.submitted && companyname.invalid }" required>
+              <div *ngIf="f.submitted && companyname.invalid" class="invalid-feedback">
+                <div *ngIf="companyname.errors.required">Company name is required</div>
+            </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-companyrno">Registration number</label>
+              <input type="text"  class="form-control" placeholder="Registration number" [(ngModel)]="schoolDetails.registration" name="companyrgst" >
+              <div *ngIf="f.submitted && companyrgst.invalid" class="invalid-feedback">
+                <div *ngIf="companyrgst.errors.required">Company registration number is required</div>
+            </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-companyarea">Company area of business</label>
+              <input type="text"  class="form-control" placeholder="Company area of business" [(ngModel)]="schoolDetails.companybusiness" name="companybusiness">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-last-name">Registration date</label>
+              <input type="text"  class="form-control" placeholder="Registration date" [(ngModel)]="schoolDetails.registrationdate" name="registrationdate">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-numberofEmply">Number of Employees</label>
+              <input type="text"  class="form-control" placeholder="Number of Employees" [(ngModel)]="schoolDetails.noemployee" name="noemployee" #noemployee="ngModel" [ngClass]="{ 'is-invalid': f.submitted && noemployee.invalid }" required>
+              <div *ngIf="f.submitted && noemployee.invalid" class="invalid-feedback">
+                <div *ngIf="noemployee.errors.required">Number of Employees is required</div>
+            </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <hr class="my-4" />
+      <h6 class="heading-small text-muted mb-4">Contact information</h6>
+      <div class="pl-lg-4">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label" for="input-address">Address</label>
+              <input  class="form-control"  type="text" placeholder="Address" [(ngModel)]="schoolDetails.address" name="address">
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-work">Work Location & address of operations</label>
+              <input type="text"  class="form-control" placeholder="Work Location" [(ngModel)]="schoolDetails.location" name="location">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-Website">Website</label>
+              <input type="text"  class="form-control" placeholder="Website" [(ngModel)]="schoolDetails.website" name="website">
+            </div>
+          </div>
+        </div> #phoneno="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phoneno.invalid }" required-->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-phonenumber">Phone Number</label>
+              <input type="number" class="form-control" placeholder="Phone Number" [(ngModel)]="schoolDetails.mobileno" name="phoneno"  >
+             
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-email">Email address</label>
+              <input type="email" class="form-control" placeholder="Email address" [(ngModel)]="schoolDetails.emailid" name="emailid" >
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <hr class="my-4" />
+      <h6 class="heading-small text-muted mb-4">About</h6>
+      <div class="pl-lg-4">
+        <div class="form-group">
+          <label>Profile/About/Vision</label>
+          <textarea rows="4" class="form-control" placeholder="Profile/About/Vision" [(ngModel)]="schoolDetails.about" name="about"></textarea>
+        </div>
+      </div> -->
+    
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+    <button  class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</button>
+    <button  type="submit" class="btn btn-sm btn-primary">Save</button>
+  </div>
+</form>
+</ng-template>
+<ng-template #addProducts let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form name="form" (ngSubmit)="f.form.valid && addProdcuts(modal)" #f="ngForm" novalidate>
+  <div class="modal-body">
+    <h6 class="heading-small text-muted mb-4">Products information</h6>
+      <div class="pl-lg-4">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-companyname">Product name</label>
+              <input type="text"  class="form-control" placeholder="Product name" [(ngModel)]="productsDetails.name" name="productname"  #productname="ngModel" [ngClass]="{ 'is-invalid': f.submitted && productname.invalid }" required>
+              <div *ngIf="f.submitted && productname.invalid" class="invalid-feedback">
+                <div *ngIf="productname.errors.required">product name is required</div>
+            </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-companyrno">Size</label>
+              <select class="form-control" [(ngModel)]="productsDetails.size" name="companyid" >
+                <option  value="" selected>select</option>
+              <option  *ngFor="let cat of categories" [value]="cat.name">{{cat.name}}</option>
+              
+            </select>
+            </div>
+            </div>
+          </div>
+        
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-companyarea">Price</label>
+              <input type="text"  class="form-control" placeholder="Price" [(ngModel)]="productsDetails.price" name="price">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-last-name">Total Stock</label>
+              <input type="text"  class="form-control" placeholder="Total Stock" [(ngModel)]="productsDetails.totalstock" name="totalstock">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-numberofEmply">Sold</label>
+              <input type="text"  class="form-control" placeholder="Sold" [(ngModel)]="productsDetails.sold" name="noemployee" >
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    
+     
+    
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+    <button  class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</button>
+    <button  type="submit" class="btn btn-sm btn-primary">Save</button>
+  </div>
+</form>
+</ng-template>
+<ng-template #ProductsList let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-titlelist">Stock details of {{Schoolname}}</h4>
+     
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let prd of productsList;">
+       <div> <span>Size</span> : {{prd.category}}</div>
+      <div class="table-responsive">
+        <table class="table align-items-center table-flush">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Product name</th>
+              
+              <th scope="col">Total Stock</th>
+              <th scope="col">Sold</th>
+              <th scope="col">Available stock</th>
+              <th scope="col">Prize</th>
+              <th scope="col">Total selling price</th>
+              <th scope="col">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of prd.product;">
+              <th scope="row">
+                <div class="media align-items-center">
+                 {{product.name}}
+                </div>
+              </th>
+              <!-- <td>
+                {{product.size}}
+              </td> -->
+              <td>
+                {{product.totalstock}}
+              </td>
+              <td>
+                {{product.sold}}
+              </td>
+              <td>
+                {{+product.totalstock - +product.sold}}
+              </td>
+              <td>
+                {{product.price}}
+              </td>
+              <td>
+                {{+product.price * +product.sold}}
+              </td>
+              
+              <td>
+                <a class="btn btn-sm btn-icon-only text-light"  (click)="editProducts(product,addProducts)">
+                  <i class="fas fa-edit"></i>
+                </a>
+             
+            </td>
+            </tr>
+           
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+      <a href="javascript:void(0)" class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</a>
+     
+    </div>
+  </ng-template>

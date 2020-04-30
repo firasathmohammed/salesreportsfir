@@ -1,0 +1,306 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+              <div class="col-4">
+                <h3 class="mb-0">Interview Scheduler</h3>
+              </div>
+              <div class="text-center">
+                  <a href="javascript:void(0)" class="btn  btn-icon mr-4" [ngClass]="interviewView ? 'btn-primary':'btn-neutral'" (click)="getInterviewSchedule()"> 
+                  
+                    <span class="btn-inner--text">Interview schedule</span>
+                  </a>
+                  <a href="javascript:void(0)" class="btn btn-icon"  [ngClass]="acceptinterviewView ? 'btn-primary':'btn-neutral'" (click)="getacceptcandidateSchedule()">
+                    
+                    <span class="btn-inner--text">Accept candidate</span>
+                  </a>
+                
+                  
+                </div>
+              <!-- <div class="col-4 text-right">
+                <a href="javascript:void(0)" class="btn btn-sm btn-primary" (click)="openModalCreate(contents)">Create</a>
+              </div> -->
+            </div>
+          </div>
+  
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Candidate ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Skill</th>
+                  <th scope="col">Experience</th>
+                  <th scope="col">Type of interview</th>
+                  <th scope="col">Contact person</th>
+                  <th scope="col">Contact person number</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let interview of interviewList;">
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      {{interview.candidateid}}
+                    </div>
+                  </th>
+                  <td>
+                    {{interview.candidatename}}
+                  </td>
+                  <td>
+                    {{interview.skills}}
+                  </td>
+                  <td>
+                      {{interview.experience}}
+                    </td>
+                  <td>
+                    {{interview.interviewtype}}
+                  </td>
+                  <td>
+                    {{interview.contactperson}}
+                  </td>
+                  <td>
+                    {{interview.contactpersonnumber}}
+                  </td>
+                 
+                  <td class="text-right">
+                    <div ngbDropdown placement="bottom-right">
+                      <a class="btn btn-sm btn-icon-only text-light" ngbDropdownToggle>
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="createFeedbackForCandidate(interview,feedbackForm)" *ngIf="candidateuserType !='candidate'">Feedback</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="acceptForCandidateModal(interview,AcceptCandidate)" *ngIf="interviewView">Accept Interview</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="openMakeAnofferModal(interview,makeanofferForm)" *ngIf="candidateuserType !='candidate'">Make an offer</a>
+                        <a class="dropdown-item" href="javascript:void(0)" (click)="openInterviewHistoryModal(interview,HistoryView)" *ngIf="candidateuserType !='candidate'">Interview History</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+  
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer py-4">
+            <!-- <nav aria-label="...">
+              <ul class="pagination justify-content-end mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                    <i class="fas fa-angle-left"></i>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link" href="javascript:void(0)">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="javascript:void(0)">2 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="javascript:void(0)">
+                    <i class="fas fa-angle-right"></i>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              </ul>
+            </nav> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Dark table -->
+  
+  </div>
+
+  <ng-template #feedbackForm let-modal>
+      <div class="modal-header">
+          <h4 class="modal-title">Feedback</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form name="form" (ngSubmit)="f.form.valid && giveFeedbackToCandidate()" #f="ngForm" novalidate>
+        <div class="modal-body">
+          
+            <h6 class="heading-small text-muted mb-4">Feedback</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" >Candidate name</label>
+                    <input type="text" class="form-control" placeholder="Candidate Name" [(ngModel)]="feedbackInput.candidatename" name="candidatename" #candidatename="ngModel" [ngClass]="{ 'is-invalid': f.submitted && candidatename.invalid }" required>
+                    <div *ngIf="f.submitted && candidatename.invalid" class="invalid-feedback">
+                      <div *ngIf="candidatename.errors.required">Candidate Name is required</div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" >Round</label>
+                  
+                    <select class="form-control" [(ngModel)]="feedbackInput.round" name="round">
+                        <option value="">select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
+                      </select>
+                  
+              </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="form-control-label">Interview By</label>
+                        <input type="text"  class="form-control" placeholder="Interview By" [(ngModel)]="feedbackInput.interviewby" name="interviewby" #interviewby="ngModel" [ngClass]="{ 'is-invalid': f.submitted && interviewby.invalid }"  required>
+                   
+                      <div *ngIf="f.submitted && interviewby.invalid" class="invalid-feedback">
+                        <div *ngIf="interviewby.errors.required">Interview By is required</div>
+                        
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="form-control-label" >Status</label>
+                      
+                        <select class="form-control" [(ngModel)]="feedbackInput.status" name="round">
+                            <option value="">select</option>
+                            <option value="0">No Hire</option>
+                            <option value="1">Hire</option>
+                          </select>
+                      
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-lg-12">
+                      <div class="form-group">
+                          <label class="form-control-label">Feedback</label>
+                          <textarea rows="4" class="form-control" placeholder="Feedback"
+                          [(ngModel)]="feedbackInput.feedback" name="feedback"></textarea>
+                     
+                       
+                    </div>
+                  </div>
+               
+                </div>
+         
+            </div>
+          
+        </div>
+        <div class="modal-footer">
+         
+            <button   class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</button>
+            <button   type="submit" class="btn btn-sm btn-primary">Save</button>
+          </div>
+      </form>
+    </ng-template>
+    <ng-template #AcceptCandidate let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Accept candidate</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            
+      <div>Accept interview for candidate </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+          <a href="javascript:void(0)" class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</a>
+          <a href="javascript:void(0)" class="btn btn-sm btn-primary" (click)="acceptcandidatForInterview()">OK</a>
+        </div>
+      </ng-template>
+      <ng-template #makeanofferForm let-modal>
+          <div class="modal-header">
+              <h4 class="modal-title">Make an offer</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form name="form" (ngSubmit)="f.form.valid && makeanOffer()" #f="ngForm" novalidate>
+            <div class="modal-body">
+              
+                <h6 class="heading-small text-muted mb-4">Make an offer</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" >Candidate name</label>
+                        <input type="text" class="form-control" placeholder="Candidate Name" [(ngModel)]="makeAnOfferInput.candidatename" name="candidatename" #candidatename="ngModel" [ngClass]="{ 'is-invalid': f.submitted && candidatename.invalid }" required>
+                        <div *ngIf="f.submitted && candidatename.invalid" class="invalid-feedback">
+                          <div *ngIf="candidatename.errors.required">Candidate Name is required</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label" >Offer by</label>
+                            <input type="text" class="form-control" placeholder="Offer by" [(ngModel)]="makeAnOfferInput.offeredby" name="offeredby" >
+                           
+                          </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label">Accepting Date</label>
+                            <input type="date"  class="form-control" placeholder="Accepting Date" [(ngModel)]="makeAnOfferInput.acceptingdate" name="acceptingdate">
+                       
+                          
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label">Joining Date</label>
+                            <input type="date"  class="form-control" placeholder="Joining Date" [(ngModel)]="makeAnOfferInput.joiningdate" name="joiningdate">
+                       
+                          
+                      </div>
+                    </div>
+                  </div>
+                 
+             
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+             
+                <button   class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</button>
+                <button   type="submit" class="btn btn-sm btn-primary">Save</button>
+              </div>
+          </form>
+        </ng-template>
+        <ng-template #HistoryView let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Interview History</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                
+          <div>History </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+              <a href="javascript:void(0)" class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</a>
+              <a href="javascript:void(0)" class="btn btn-sm btn-primary" (click)="modal.dismiss('ok')">OK</a>
+            </div>
+          </ng-template>

@@ -1,0 +1,365 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Candidate List</h3>
+            </div>
+            <div class="col-4 text-right">
+              <a href="javascript:void(0)" class="btn btn-sm btn-primary" (click)="openModalCreate(contents)">Create</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">PAN number</th>
+                <th scope="col">phone number</th>
+                <th scope="col">Emaild ID</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Date of birth</th>
+                <!-- <th scope="col">Experience</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Current CTC</th>
+                <th scope="col">Expected CTC</th> -->
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let candidate of candidateList;">
+                <th scope="row" >
+                  <div class="media align-items-center">
+                    {{candidate.name}}
+                  </div>
+                </th>
+                <td>
+                  {{candidate.panno}}
+                </td>
+                <td>
+                  {{candidate.mobileno}}
+                </td>
+                <td>
+                  {{candidate.emailid}}
+                </td>
+                <td>
+                  {{candidate.gender}}
+                </td>
+                <td>
+                  {{candidate.dob}}
+                </td>
+                <!-- <td>
+                  {{candidate.experience}}
+                </td>
+                <td>
+                  {{candidate.designation}}
+                </td>
+                <td>
+                  {{candidate.currentctc}}
+                </td>
+                <td>
+                  {{candidate.expectedctc}}
+                </td> -->
+                
+                <td class="text-right">
+                  <div ngbDropdown placement="bottom-right">
+                    <a class="btn btn-sm btn-icon-only text-light" ngbDropdownToggle>
+                      <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                      <a class="dropdown-item" (click)='getCandidateDetails(candidate,contents)' href="javascript:void(0)">Edit</a>
+                      <a class="dropdown-item" (click)='openInterviewHistoryModal(candidate,HistoryView)' href="javascript:void(0)">History</a>
+                      <!-- <a class="dropdown-item" href="javascript:void(0)">Another action</a>
+                      <a class="dropdown-item" href="javascript:void(0)">Something else here</a> -->
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer py-4">
+          <!-- <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item disabled">
+                <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                  <i class="fas fa-angle-left"></i>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">2 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">
+                  <i class="fas fa-angle-right"></i>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Dark table -->
+
+</div>
+<ng-template #contents let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Candidate</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form name="form" (ngSubmit)="f.form.valid && createupdateCandidate()" #f="ngForm" novalidate>
+  <div class="modal-body">
+    
+      <h6 class="heading-small text-muted mb-4">Candidate information</h6>
+      <div class="pl-lg-4">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-name">Name</label>
+              <input type="text" class="form-control" placeholder="Name"
+                [(ngModel)]="candidateDetails.name" name="name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required>
+                <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                  <div *ngIf="name.errors.required">Name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-pan">PAN No</label>
+              <input type="text" class="form-control " placeholder="PAN"
+                [(ngModel)]="candidateDetails.panno" name="pan" #pan="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pan.invalid }"  required>
+                <div *ngIf="f.submitted && pan.invalid" class="invalid-feedback">
+                  <div *ngIf="pan.errors.required">Pan Number is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-phoneno">Phone No</label>
+              <input type="text" class="form-control " placeholder="phone No"
+                [(ngModel)]="candidateDetails.phoneno" name="phoneno" #phoneno="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phoneno.invalid }"  required>
+                <div *ngIf="f.submitted && phoneno.invalid" class="invalid-feedback">
+                  <div *ngIf="phoneno.errors.required">Phone number is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-emailid">Email ID</label>
+              <input type="email" class="form-control " placeholder="Email ID"
+                [(ngModel)]="candidateDetails.emailid" name="emailid" #emailid="ngModel" [ngClass]="{ 'is-invalid': f.submitted && emailid.invalid }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <div *ngIf="f.submitted && emailid.invalid" class="invalid-feedback">
+                  <div *ngIf="emailid.errors.required">Email is required</div>
+                  <div *ngIf="emailid.errors.pattern">Email must be a valid email address</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-gender">Gender</label>
+             <select class="form-control " [(ngModel)]="candidateDetails.gender" name='gender'>
+               <option value="male">Male</option>
+               <option value="female">Female</option>
+             </select>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <!-- <div class="form-group">
+              <label class="form-control-label" for="input-dob">Date of birth</label>
+              <input type="email" class="form-control form-control-alternative" placeholder="yyyy-mm-dd"
+                [(ngModel)]="candidateDetails.dob" name="dob" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"> 
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                name="dp" [(ngModel)]="candidateDetails.dob" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" > 
+        
+            </div> -->
+            <div class="form-group">
+                <label class="form-control-label" for="input-dob">Date of birth</label>
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                </div>
+                <input class="form-control" type="date" placeholder="Select date" name="date" [(ngModel)]="candidateDetails.dob" (click)="d.toggle()" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4" />
+      <h6 class="heading-small text-muted mb-4">Skills</h6>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-skill">Skill</label>
+            <input type="text" class="form-control " placeholder="Skill"
+              [(ngModel)]="candidateDetails.skill" name="skill">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-experience">Experience</label>
+            <input type="text" class="form-control " placeholder="Experience"
+              [(ngModel)]="candidateDetails.experience" name="experience">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-designation">Designation</label>
+            <input type="text" class="form-control " placeholder="Designation"
+              [(ngModel)]="candidateDetails.designation" name="designation">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-currentctc">Current CTC</label>
+            <input type="text" class="form-control " placeholder="Current CTC"
+              [(ngModel)]="candidateDetails.currentctc" name="currentctc">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-expectedctc">Expected CTC</label>
+            <input type="text" class="form-control " placeholder="Expected CTC"
+              [(ngModel)]="candidateDetails.expectedctc" name="expectedctc">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-noticeperiod">Notice period</label>
+            <input type="text" class="form-control " placeholder="Notice period"
+              [(ngModel)]="candidateDetails.noticeperiod" name="noticeperiod">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-currentwork">Current work location</label>
+            <input type="text" class="form-control " placeholder="Current work location"
+              [(ngModel)]="candidateDetails.currentwork" name="currentwork">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-desiredwork">Desired work location</label>
+            <input type="text" class="form-control " placeholder="Desired work location"
+              [(ngModel)]="candidateDetails.desiredwork" name="desiredwork">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-diffrentshift">Diffrent Shift</label>
+            <select class="form-control " [(ngModel)]="candidateDetails.diffrentshift" name="diffrentshift">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label class="form-control-label" for="input-openinternational">Open International</label>
+            <select class="form-control " [(ngModel)]="candidateDetails.openinternational" name="openinternational">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4" />
+      <h6 class="heading-small text-muted mb-4">Contact information</h6>
+      <div class="pl-lg-4">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label" for="input-address">Address</label>
+              <input class="form-control " type="text" placeholder="Address"
+                [(ngModel)]="candidateDetails.address" name="address">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-city">City</label>
+              <input type="text" class="form-control " placeholder="City"
+                [(ngModel)]="candidateDetails.city" name="city">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-state">State</label>
+              <input type="text" class="form-control " placeholder="State"
+                [(ngModel)]="candidateDetails.state" name="state">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label class="form-control-label" for="input-pincode">Pin code</label>
+              <input type="number" class="form-control " placeholder="pin code"
+                [(ngModel)]="candidateDetails.pincode" name="pincode">
+            </div>
+          </div>
+         
+        </div>
+      </div>
+      
+   
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-outline-dark" (click)="createupdateCandidate()">Save</button> -->
+    <button   class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</button>
+    <button  class="btn btn-sm btn-primary" >Save</button>
+  </div>
+</form>
+</ng-template>
+<ng-template #HistoryView let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Interview History</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        
+  <div>History </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="createCompany()">Save</button> -->
+      <a href="javascript:void(0)" class="btn btn-sm btn-light" (click)="modal.dismiss('Cross Cancel')">Cancel</a>
+      <a href="javascript:void(0)" class="btn btn-sm btn-primary" (click)="modal.dismiss('ok')">OK</a>
+    </div>
+  </ng-template>
